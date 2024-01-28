@@ -5,6 +5,7 @@ import com.example.IMDbAPI.config.service.JwtService;
 import com.example.IMDbAPI.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import com.example.IMDbAPI.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +20,7 @@ public class AuthenticationService {
     private JwtService jwtService;
     private AuthenticationManager authenticationManager;
 
+    @Autowired
     public AuthenticationService(UserRepository userRepository,
                                  PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
@@ -32,8 +34,8 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(AuthenticationRequest request) {
         var user= User.builder()
-                .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
         userRepository.save(user);
