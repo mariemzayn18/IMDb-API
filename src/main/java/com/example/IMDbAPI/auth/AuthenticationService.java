@@ -2,6 +2,8 @@ package com.example.IMDbAPI.auth;
 
 
 import com.example.IMDbAPI.config.service.JwtService;
+import com.example.IMDbAPI.exceptions.EmailAlreadyExistsException;
+import com.example.IMDbAPI.exceptions.InvalidCredentialsException;
 import com.example.IMDbAPI.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import com.example.IMDbAPI.user.User;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +36,8 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse register(User request) {
-        if (userRepository.findById(request.getEmail()).isPresent()) {
-            return AuthenticationResponse.builder()
-                    .errorMessage("Email already exists")
-                    .build();
+        if (userRepository.existsById(request.getEmail())) {
+            throw new EmailAlreadyExistsException("Email already exists");
         }
 
         var user= User.builder()
@@ -58,6 +59,9 @@ public class AuthenticationService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
+        } catch (AuthenticationException e) {
+            throw new InvalidCredentialsException("Invalid credentials");
+        }
 
             var user = userRepository.findById(request.getEmail())
                     .orElseThrow();
@@ -67,11 +71,5 @@ public class AuthenticationService {
             return AuthenticationResponse.builder()
                     .token(jwtToken)
                     .build();
-
-        } catch (AuthenticationException e) {
-                return AuthenticationResponse.builder()
-                        .errorMessage("Invalid credentials")
-                        .build();
-        }
     }
 }
