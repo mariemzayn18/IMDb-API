@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class User {
     @Id
-    private String username;
+    private String email;
     private String password;
     private String token;
     private int isAuthenticated;

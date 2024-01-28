@@ -19,9 +19,9 @@ public class UserController {
         userService.addUser(user);
     }
 
-    @GetMapping("/user/{username}")
-    public User getUser(@PathVariable String username) {
-        return userService.getUser(username);
+    @GetMapping("/user/{email}")
+    public User getUser(@PathVariable String email) {
+        return userService.getUser(email);
     }
 
     @GetMapping("/users")
