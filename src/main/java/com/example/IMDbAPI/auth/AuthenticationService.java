@@ -38,6 +38,11 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
+        // if email already exists, throw an exception
+        if(userRepository.findById(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
+
         userRepository.save(user);
 
         var jwtToken= this.jwtService.generateToken(user);

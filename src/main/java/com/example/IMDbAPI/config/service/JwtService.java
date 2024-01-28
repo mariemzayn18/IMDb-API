@@ -17,10 +17,11 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+    private SecretKey secretKey;
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-
 
     // to generate a token without any extra claims
     public String generateToken(UserDetails userDetails) {
@@ -31,20 +32,15 @@ public class JwtService {
             Map<String,Object> extraClaims,
             UserDetails userDetails
     ){
-        try {
             Date now = new Date();
             Date expiryDate = new Date(now.getTime() + 1000 * 60 * 60 * 24); // 1 day
-            SecretKey key= generateSecretKey();
+            SecretKey key= getSecretKey();
             return Jwts.builder()
                     .subject(userDetails.getUsername())
                     .issuedAt(now)
                     .expiration(expiryDate)
                     .signWith(key)
                     .compact();
-        }
-        catch (NoSuchAlgorithmException e) {
-            return null;
-        }
     }
 
     // Validate whether token is expired or not
@@ -83,7 +79,18 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    private SecretKey getSecretKey(){
+        if(secretKey==null){
+            try {
+                secretKey= generateSecretKey();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return secretKey;
+    }
     private Claims extractAllClaims(String token) throws NoSuchAlgorithmException {
-        return Jwts.parser().verifyWith(generateSecretKey()).build().parseSignedClaims(token).getBody();
+        return Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token).getBody();
     }
 }
