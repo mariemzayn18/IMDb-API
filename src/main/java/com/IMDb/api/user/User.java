@@ -1,4 +1,4 @@
-package com.example.IMDbAPI.user;
+package com.IMDb.api.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

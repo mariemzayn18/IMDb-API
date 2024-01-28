@@ -1,4 +1,4 @@
-package com.example.IMDbAPI.exceptions;
+package com.IMDb.api.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -8,10 +8,10 @@
 		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>IMDb-API</artifactId>
+	<groupId>com.IMDb</groupId>
+	<artifactId>api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>IMDb-API</name>
+	<name>api</name>
 	<description>API for IMDb website</description>
 	<properties>
 		<java.version>21</java.version>

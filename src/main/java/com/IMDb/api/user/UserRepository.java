@@ -1,4 +1,4 @@
-package com.example.IMDbAPI.user;
+package com.IMDb.api.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

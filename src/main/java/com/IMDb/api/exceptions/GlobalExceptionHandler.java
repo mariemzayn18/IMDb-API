@@ -1,4 +1,4 @@
-package com.example.IMDbAPI.exceptions;
+package com.IMDb.api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

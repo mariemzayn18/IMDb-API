@@ -1,4 +1,4 @@
-package com.example.IMDbAPI.auth;
+package com.IMDb.api.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

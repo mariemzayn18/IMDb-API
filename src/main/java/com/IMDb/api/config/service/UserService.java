@@ -1,12 +1,10 @@
-package com.example.IMDbAPI.config.service;
+package com.IMDb.api.config.service;
 
-import com.example.IMDbAPI.user.User;
-import com.example.IMDbAPI.user.UserRepository;
+import com.IMDb.api.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Service

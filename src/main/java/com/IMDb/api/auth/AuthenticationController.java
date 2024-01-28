@@ -1,11 +1,11 @@
-package com.example.IMDbAPI.auth;
+package com.IMDb.api.auth;
 
+import com.IMDb.api.user.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.IMDbAPI.user.User;
 
 @RestController
 @RequestMapping("/api/auth")

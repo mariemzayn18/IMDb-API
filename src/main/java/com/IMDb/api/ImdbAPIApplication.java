@@ -1,13 +1,13 @@
-package com.example.IMDbAPI;
+package com.IMDb.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ImDbApiApplication {
+public class ImdbAPIApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ImDbApiApplication.class, args);
+		SpringApplication.run(ImdbAPIApplication.class, args);
 	}
 
 }

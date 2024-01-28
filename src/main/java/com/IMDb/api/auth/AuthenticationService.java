@@ -1,17 +1,16 @@
-package com.example.IMDbAPI.auth;
+package com.IMDb.api.auth;
 
 
-import com.example.IMDbAPI.config.service.JwtService;
-import com.example.IMDbAPI.exceptions.EmailAlreadyExistsException;
-import com.example.IMDbAPI.exceptions.InvalidCredentialsException;
-import com.example.IMDbAPI.user.UserRepository;
+import com.IMDb.api.exceptions.EmailAlreadyExistsException;
+import com.IMDb.api.exceptions.InvalidCredentialsException;
+import com.IMDb.api.user.User;
+import com.IMDb.api.user.UserRepository;
+import com.IMDb.api.config.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import com.example.IMDbAPI.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

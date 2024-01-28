@@ -1,4 +1,4 @@
-package com.example.IMDbAPI.config.service;
+package com.IMDb.api.config.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
