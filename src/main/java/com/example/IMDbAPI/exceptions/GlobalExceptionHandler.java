@@ -12,15 +12,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<Object> handleInvalidCredentialsException(InvalidCredentialsException ex) {
         String errorMessage = ex.getMessage();
-        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, errorMessage, "invalid_credentials");
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, errorMessage, "BAD_CREDENTIALS");
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<Object> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
         String errorMessage = ex.getMessage();
-        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, errorMessage, "email_already_exists");
-
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, errorMessage, "EMAIL_EXISTS");
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 }
