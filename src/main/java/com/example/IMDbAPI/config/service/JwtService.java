@@ -33,7 +33,8 @@ public class JwtService {
             UserDetails userDetails
     ){
             Date now = new Date();
-            Date expiryDate = new Date(now.getTime() + 1000 * 60 * 60 * 24); // 1 day
+            long expirationMillis = 1000 * 60 * 60 * 24; // 1 day
+            Date expiryDate = new Date(now.getTime() + expirationMillis);
             SecretKey key= getSecretKey();
             return Jwts.builder()
                     .subject(userDetails.getUsername())
@@ -50,9 +51,12 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-            final Date expiration = extractClaim(token, Claims::getExpiration);
+            final Date expiration = extractExpiration(token);
             return expiration.before(new Date());
 
+    }
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
     // for retrieving any information from token

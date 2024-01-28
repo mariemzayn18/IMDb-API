@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -48,9 +50,12 @@ public class AuthenticationService {
         userRepository.save(user);
 
         var jwtToken= this.jwtService.generateToken(user);
+        var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime())
+                /1000;
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .expiresIn(jwtExpiration)
                 .build();
     }
 
@@ -67,9 +72,12 @@ public class AuthenticationService {
                     .orElseThrow();
 
             var jwtToken = this.jwtService.generateToken(user);
+            var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime())
+                                /1000;
 
-            return AuthenticationResponse.builder()
+        return AuthenticationResponse.builder()
                     .token(jwtToken)
+                    .expiresIn(jwtExpiration)
                     .build();
     }
 }
