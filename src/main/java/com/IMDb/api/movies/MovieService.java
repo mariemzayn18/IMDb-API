@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.sql.Date.valueOf;
 
@@ -21,21 +22,15 @@ public class MovieService {
     MovieService(MovieRepository movieRepository){this.movieRepository= movieRepository;}
 
     private List<Movie> readMoviesFromJSON() throws IOException {
-        List<Movie> movies= new ArrayList<>();
+        List<Movie> movies = new ArrayList<>();
+
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/IMDb/api/movies/movies.json"))) {
-            StringBuilder jsonContent = new StringBuilder();
-            String line;
+            JSONArray jsonArray = new JSONArray(reader.lines().collect(Collectors.joining()));
 
-            while ((line = reader.readLine()) != null) {
-                jsonContent.append(line);
-            }
-
-            JSONArray jsonArray = new JSONArray(jsonContent.toString());
             jsonArray.forEach(movie -> {
                 JSONObject jsonObject = (JSONObject) movie;
-                String releaseDateString = jsonObject.getString("releaseDate");
-                LocalDate releaseDate = LocalDate.parse(releaseDateString, DateTimeFormatter.ISO_DATE);
-                Movie m = new Movie(
+                LocalDate releaseDate = LocalDate.parse(jsonObject.getString("releaseDate"), DateTimeFormatter.ISO_DATE);
+                movies.add(new Movie(
                         jsonObject.getLong("id"),
                         jsonObject.getString("posterPath"),
                         jsonObject.getString("backdropPath"),
@@ -43,12 +38,13 @@ public class MovieService {
                         valueOf(releaseDate),
                         jsonObject.getInt("page"),
                         jsonObject.getString("overview")
-                );
-                movies.add(m);
+                ));
             });
-    }
+        }
+
         return movies;
     }
+
 
     public void addMovies() {
         try {
