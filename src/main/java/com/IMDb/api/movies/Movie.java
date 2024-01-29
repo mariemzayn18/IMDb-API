@@ -20,7 +20,6 @@ public class Movie {
     private String backdropPath;
     private String title;
     private Date releaseDate;
-    private Integer page;
 
     @Lob
     @Column(columnDefinition = "TEXT")

@@ -18,8 +18,8 @@ public class MovieController {
     }
 
     @GetMapping("/movies")
-    public List<Movie> getMovies(){
-        return movieService.getMovies();
+    public List<Movie> getMovies(@RequestParam(required = false) int page){
+        return movieService.getMovies(page);
     }
 
     @GetMapping("/movie/{id}")

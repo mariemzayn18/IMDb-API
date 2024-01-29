@@ -2,6 +2,8 @@ package com.IMDb.api.movies;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -36,7 +38,6 @@ public class MovieService {
                         jsonObject.getString("backdropPath"),
                         jsonObject.getString("title"),
                         valueOf(releaseDate),
-                        jsonObject.getInt("page"),
                         jsonObject.getString("overview")
                 ));
             });
@@ -55,8 +56,10 @@ public class MovieService {
         }
     }
 
-    public List<Movie> getMovies() {
-       return movieRepository.findAll();
+    public List<Movie> getMovies(int page) {
+        int currentPage=page -1;
+        Pageable pageable = PageRequest.of(currentPage, 8);
+        return movieRepository.findAll(pageable).toList();
     }
 
 
