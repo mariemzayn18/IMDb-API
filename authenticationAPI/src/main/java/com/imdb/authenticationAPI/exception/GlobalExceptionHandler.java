@@ -1,4 +1,4 @@
-package com.imdb.authenticationAPI.exceptions;
+package com.imdb.authenticationAPI.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

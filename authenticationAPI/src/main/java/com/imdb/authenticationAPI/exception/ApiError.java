@@ -1,4 +1,4 @@
-package com.imdb.authenticationAPI.exceptions;
+package com.imdb.authenticationAPI.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

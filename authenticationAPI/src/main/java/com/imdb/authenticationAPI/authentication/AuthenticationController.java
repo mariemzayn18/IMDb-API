@@ -1,4 +1,4 @@
-package com.imdb.authenticationAPI.auth;
+package com.imdb.authenticationAPI.authentication;
 
 import com.imdb.authenticationAPI.user.User;
 import org.springframework.http.ResponseEntity;

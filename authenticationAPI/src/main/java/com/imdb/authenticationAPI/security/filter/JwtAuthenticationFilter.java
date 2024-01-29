@@ -1,7 +1,7 @@
-package com.imdb.authenticationAPI.config;
+package com.imdb.authenticationAPI.security.filter;
 
-import com.imdb.authenticationAPI.config.service.JwtService;
-import com.imdb.authenticationAPI.config.service.UserService;
+import com.imdb.authenticationAPI.security.service.JwtService;
+import com.imdb.authenticationAPI.security.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

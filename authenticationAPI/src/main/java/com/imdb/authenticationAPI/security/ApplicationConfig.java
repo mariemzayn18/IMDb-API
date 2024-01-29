@@ -1,6 +1,6 @@
-package com.imdb.authenticationAPI.config;
+package com.imdb.authenticationAPI.security;
 
-import com.imdb.authenticationAPI.config.service.UserService;
+import com.imdb.authenticationAPI.security.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,4 +1,4 @@
-package com.imdb.authenticationAPI.config.service;
+package com.imdb.authenticationAPI.security.service;
 
 import com.imdb.authenticationAPI.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
