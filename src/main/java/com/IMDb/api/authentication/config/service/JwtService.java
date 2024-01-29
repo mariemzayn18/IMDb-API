@@ -86,6 +86,7 @@ public class JwtService {
     private SecretKey getSecretKey(){
         if(secretKey==null){
             try {
+                System.out.println("Generating secret key.....");
                 secretKey= generateSecretKey();
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

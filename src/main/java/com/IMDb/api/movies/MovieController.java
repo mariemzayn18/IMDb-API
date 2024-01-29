@@ -1,11 +1,9 @@
 package com.IMDb.api.movies;
 
 
-import com.IMDb.api.movies.entity.Movie;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,15 @@ public class MovieController {
     @GetMapping("/movie/{id}")
     public Movie getMovieById(@PathVariable Long id){
         return movieService.getMovieById(id);
+    }
+
+    @PostMapping("/movies")
+    public ResponseEntity<String> addMovies(@RequestBody List<Movie> movies){
+        try {
+            movieService.addMovies();
+            return new ResponseEntity<>("Movies added successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error adding movies: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
