@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(POST, "/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll() //will change this..
                 )
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
