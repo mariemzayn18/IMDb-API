@@ -1,4 +1,4 @@
-package com.IMDb.api.auth;
+package com.IMDb.api.authentication.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

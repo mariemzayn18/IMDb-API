@@ -1,7 +1,7 @@
-package com.IMDb.api.config;
+package com.IMDb.api.authentication.config;
 
-import com.IMDb.api.config.service.JwtService;
-import com.IMDb.api.config.service.UserService;
+import com.IMDb.api.authentication.config.service.JwtService;
+import com.IMDb.api.authentication.config.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

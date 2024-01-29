@@ -1,4 +1,4 @@
-package com.IMDb.api.exceptions;
+package com.IMDb.api.authentication.exceptions;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 

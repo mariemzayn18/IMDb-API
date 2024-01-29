@@ -1,6 +1,6 @@
-package com.IMDb.api.config;
+package com.IMDb.api.authentication.config;
 
-import com.IMDb.api.config.service.UserService;
+import com.IMDb.api.authentication.config.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

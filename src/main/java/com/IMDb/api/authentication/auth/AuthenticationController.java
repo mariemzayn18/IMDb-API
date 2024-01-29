@@ -1,6 +1,6 @@
-package com.IMDb.api.auth;
+package com.IMDb.api.authentication.auth;
 
-import com.IMDb.api.user.User;
+import com.IMDb.api.authentication.user.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

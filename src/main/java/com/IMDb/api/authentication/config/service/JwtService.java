@@ -1,4 +1,4 @@
-package com.IMDb.api.config.service;
+package com.IMDb.api.authentication.config.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

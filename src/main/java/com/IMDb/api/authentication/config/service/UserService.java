@@ -1,6 +1,6 @@
-package com.IMDb.api.config.service;
+package com.IMDb.api.authentication.config.service;
 
-import com.IMDb.api.user.UserRepository;
+import com.IMDb.api.authentication.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

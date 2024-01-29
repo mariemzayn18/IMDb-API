@@ -1,4 +1,4 @@
-package com.IMDb.api.user;
+package com.IMDb.api.authentication.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
