@@ -33,7 +33,7 @@ public class JwtService {
             UserDetails userDetails
     ){
             Date now = new Date();
-            long expirationMillis = 1000 * 60 * 60 * 24; // 1 day
+            long expirationMillis = 1000 * 60 * 60 * 2; // 2 hours
             Date expiryDate = new Date(now.getTime() + expirationMillis);
             SecretKey key= getSecretKey();
             return Jwts.builder()
