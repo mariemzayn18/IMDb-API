@@ -17,7 +17,7 @@ public class MovieController {
     }
 
     @GetMapping("/movies")
-    public List<Movie> getMovies(@RequestParam(required = false) int page){
+    public List<Movie> getMovies(@RequestParam int page){
         return movieService.getMovies(page);
     }
 
@@ -27,12 +27,7 @@ public class MovieController {
     }
 
     @PostMapping("/movies")
-    public ResponseEntity<String> addMovies(@RequestBody List<Movie> movies){
-        try {
-            movieService.addMovies();
-            return new ResponseEntity<>("Movies added successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error adding movies: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public void addMovies(){
+        movieService.addMovies();
     }
 }
