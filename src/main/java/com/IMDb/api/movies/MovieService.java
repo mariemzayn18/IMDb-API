@@ -1,6 +1,7 @@
 package com.IMDb.api.movies;
 
 
+import com.IMDb.api.movies.entity.Movie;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

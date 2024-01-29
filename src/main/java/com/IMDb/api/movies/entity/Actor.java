@@ -1,7 +1,6 @@
-package com.IMDb.api.movies;
+package com.IMDb.api.movies.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Movie {
+public class Actor {
     @Id
     private Long id;
+    private String characterName;
+    private String name;
+    private String profilePath;
 }
