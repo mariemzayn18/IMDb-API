@@ -1,4 +1,4 @@
-package com.imdb.moviesAPI.config;
+package com.imdb.moviesAPI.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

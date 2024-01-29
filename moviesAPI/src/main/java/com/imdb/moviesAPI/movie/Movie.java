@@ -1,4 +1,4 @@
-package com.imdb.moviesAPI;
+package com.imdb.moviesAPI.movie;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.imdb.moviesAPI;
+package com.imdb.moviesAPI.movie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +25,7 @@ public class MovieService {
     private List<Movie> readMoviesFromJSON() throws IOException {
         List<Movie> movies = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/IMDb/api/movies/movies.json"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/imdb/moviesAPI/data/MoviesData.json"))) {
             JSONArray jsonArray = new JSONArray(reader.lines().collect(Collectors.joining()));
 
             jsonArray.forEach(movie -> {

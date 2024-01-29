@@ -1,4 +1,4 @@
-package com.imdb.moviesAPI.config;
+package com.imdb.moviesAPI.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
