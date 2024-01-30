@@ -16,13 +16,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MovieControllerTest {
@@ -45,7 +43,7 @@ class MovieControllerTest {
     Movie movie3;
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         movie1= new Movie((long)1,"poster1","poster2","title1",new Date(),"overview1");
