@@ -41,6 +41,9 @@ class AuthenticationControllerTest {
     @MockBean
     UserRepository userRepository;
 
+    @MockBean
+    AuthenticationManager authenticationManager;
+
     @Autowired
     AuthenticationService authenticationService;
 
@@ -50,13 +53,10 @@ class AuthenticationControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @MockBean
-    AuthenticationManager authenticationManager;
-
-    @Spy
+    @Autowired
     JwtService jwtService;
 
-    @MockBean
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     public class TestUser extends User {
@@ -127,17 +127,13 @@ class AuthenticationControllerTest {
 
         Mockito.when(userRepository.findByEmail(newUser.getEmail())).thenReturn(Optional.empty());
         Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
-        Mockito.when(passwordEncoder.encode(newUser.getPassword())).thenReturn("password");
-
-        Mockito.doReturn("token").when(jwtService).generateToken(newUser);
-        Mockito.doReturn(new Date()).when(jwtService).extractExpiration("token");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.token").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").isNotEmpty());
 
     }
     @Test
@@ -150,15 +146,12 @@ class AuthenticationControllerTest {
 
         Mockito.when(userRepository.findByEmail("existing_email")).thenReturn(Optional.of(existingUser));
 
-        Mockito.doReturn("token").when(jwtService).generateToken(existingUser);
-        Mockito.doReturn(new Date()).when(jwtService).extractExpiration("token");
-
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.token").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").isNotEmpty());
     }
     @Test
     void validate() throws Exception {
