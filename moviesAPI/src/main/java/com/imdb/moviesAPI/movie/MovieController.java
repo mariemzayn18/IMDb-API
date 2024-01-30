@@ -25,7 +25,8 @@ public class MovieController {
     }
 
     @PostMapping("/movies")
-    public void addMovies(@RequestHeader String Authorization ){
-        movieService.addMovies();
+    public void addMovies(@RequestHeader String Authorization,
+                          @RequestBody List<Movie> movies ){
+        movieService.addMovies(movies);
     }
 }

@@ -7,14 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +42,7 @@ class MovieControllerTest {
     Movie movie3;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         movie1= new Movie((long)1,"poster1","poster2","title1",new Date(),"overview1");
@@ -59,6 +61,10 @@ class MovieControllerTest {
         Mockito.when(movieRepository.findById((long)2)).thenReturn(Optional.of(movie2));
         Mockito.when(movieRepository.findById((long)3)).thenReturn(Optional.of(movie3));
         Mockito.when(movieRepository.findById((long)4)).thenReturn(Optional.empty());
+
+        // mocking adding movies to the database
+        Mockito.when(movieRepository.saveAll(Mockito.anyList())).thenReturn(movies);
+
     }
 
     @Test
@@ -87,8 +93,12 @@ class MovieControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
     }
-
     @Test
-    void addMovies() {
+    void addMovies() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/movies")
+                        .header("Authorization", "Bearer")
+                        .content(new ObjectMapper().writeValueAsString(List.of(movie1, movie2, movie3)))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
