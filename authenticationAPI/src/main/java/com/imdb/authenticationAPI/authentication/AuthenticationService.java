@@ -19,10 +19,10 @@ import java.util.Optional;
 
 @Service
 public class AuthenticationService {
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private JwtService jwtService;
-    private AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
     AuthenticationService(UserRepository userRepository,
@@ -42,7 +42,7 @@ public class AuthenticationService {
             throw new EmailAlreadyExistsException("Email already exists");
         }
 
-        var user= User.builder()
+        User user= User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
@@ -65,8 +65,7 @@ public class AuthenticationService {
             throw new InvalidCredentialsException("Invalid credentials");
         }
 
-        var user = userRepository.findByEmail(request.getEmail())
-                    .orElseThrow();
+        User user = userRepository.findByEmail(request.getEmail()).orElse(null);
 
         var jwtToken = this.jwtService.generateToken(user);
         var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;

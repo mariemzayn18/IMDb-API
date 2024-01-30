@@ -135,8 +135,15 @@ class AuthenticationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("token"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.token").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").exists());
+
+        // extra validations
+        AuthenticationResponse response= authenticationService.register(newUser);
+        assertEquals("token", response.getToken());
+        assertEquals(0, response.getExpiresIn());
+        assertEquals(response.toString(), "AuthenticationResponse(token=token, expiresIn=0)");
+
     }
     @Test
     void authenticate_withValidCredentials() throws Exception {
