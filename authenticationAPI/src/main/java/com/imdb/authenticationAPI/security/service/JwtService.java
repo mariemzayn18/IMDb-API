@@ -3,6 +3,7 @@ package com.imdb.authenticationAPI.security.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import javax.crypto.KeyGenerator;
@@ -19,6 +20,9 @@ public class JwtService {
 
     private SecretKey secretKey;
 
+    @Value("${security.jwt.expirationMillis}")
+    private long expirationMillis;
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -33,7 +37,6 @@ public class JwtService {
             UserDetails userDetails
     ){
             Date now = new Date();
-            long expirationMillis = 1000 * 60 * 60 * 2; // 2 hours
             Date expiryDate = new Date(now.getTime() + expirationMillis);
             SecretKey key= getSecretKey();
             return Jwts.builder()
