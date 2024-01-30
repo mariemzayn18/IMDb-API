@@ -1,4 +1,4 @@
-package com.imdb.authenticationAPI.security.service;
+package com.imdb.authenticationAPI.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

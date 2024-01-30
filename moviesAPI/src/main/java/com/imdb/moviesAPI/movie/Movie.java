@@ -25,5 +25,4 @@ public class Movie {
     @Column(columnDefinition = "TEXT")
     private String overview;
 
-
 }

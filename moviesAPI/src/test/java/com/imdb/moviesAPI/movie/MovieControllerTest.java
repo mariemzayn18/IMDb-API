@@ -37,6 +37,9 @@ class MovieControllerTest {
     @Autowired
     WebApplicationContext webApplicationContext;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     Movie movie1;
     Movie movie2;
     Movie movie3;
@@ -97,7 +100,7 @@ class MovieControllerTest {
     void addMovies() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/movies")
                         .header("Authorization", "Bearer")
-                        .content(new ObjectMapper().writeValueAsString(List.of(movie1, movie2, movie3)))
+                        .content(objectMapper.writeValueAsString(List.of(movie1, movie2, movie3)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
