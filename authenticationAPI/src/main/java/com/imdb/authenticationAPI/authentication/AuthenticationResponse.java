@@ -1,11 +1,8 @@
 package com.imdb.authenticationAPI.authentication;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class AuthenticationResponse {
     private String token;
