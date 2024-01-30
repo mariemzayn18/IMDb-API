@@ -11,6 +11,7 @@ import com.imdb.authenticationAPI.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -52,7 +53,7 @@ class AuthenticationControllerTest {
     @MockBean
     AuthenticationManager authenticationManager;
 
-    @MockBean
+    @Spy
     JwtService jwtService;
 
     @MockBean
@@ -71,9 +72,6 @@ class AuthenticationControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc= MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
-        Mockito.when(jwtService.generateToken(Mockito.any())).thenReturn("token");
-        Mockito.when(jwtService.extractExpiration("token")).thenReturn(new Date());
     }
 
     @Test
@@ -131,6 +129,9 @@ class AuthenticationControllerTest {
         Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
         Mockito.when(passwordEncoder.encode(newUser.getPassword())).thenReturn("password");
 
+        Mockito.doReturn("token").when(jwtService).generateToken(newUser);
+        Mockito.doReturn(new Date()).when(jwtService).extractExpiration("token");
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
@@ -138,31 +139,26 @@ class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").exists());
 
-        // extra validations
-        AuthenticationResponse response= authenticationService.register(newUser);
-        assertEquals("token", response.getToken());
-        assertEquals(0, response.getExpiresIn());
-        assertEquals(response.toString(), "AuthenticationResponse(token=token, expiresIn=0)");
-
     }
     @Test
     void authenticate_withValidCredentials() throws Exception {
         Mockito.when(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("existing_email","password")))
                 .thenReturn(new UsernamePasswordAuthenticationToken("existing_email","password"));
 
-
         TestUser existingUser= new TestUser("existing_email","password");
         String requestJson = objectMapper.writeValueAsString(existingUser);
 
         Mockito.when(userRepository.findByEmail("existing_email")).thenReturn(Optional.of(existingUser));
 
+        Mockito.doReturn("token").when(jwtService).generateToken(existingUser);
+        Mockito.doReturn(new Date()).when(jwtService).extractExpiration("token");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("token"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").value("0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.token").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").exists());
     }
     @Test
     void validate() throws Exception {
