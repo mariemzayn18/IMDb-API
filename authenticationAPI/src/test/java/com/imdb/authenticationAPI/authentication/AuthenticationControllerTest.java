@@ -22,6 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class AuthenticationControllerTest {
@@ -49,23 +50,44 @@ class AuthenticationControllerTest {
 
         User user= new User("existing_email","password");
 
+        // mocking the findByEmail method for register method
         Mockito.when(userRepository.findByEmail("existing_email")).thenReturn(Optional.of(user));
         Mockito.when(userRepository.findByEmail("new_email")).thenReturn(Optional.empty());
-        Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
+        // mocking the authenticate method with valid/bad credentials
         Mockito.when(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("new_email","password")))
                 .thenThrow(new InvalidCredentialsException("Invalid credentials"));
 
         Mockito.when(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("existing_email","password")))
                 .thenReturn(new UsernamePasswordAuthenticationToken("existing_email","password"));
 
+
+        Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
+
     }
 
     @Test
     void register_withExistingEmail() {
-        assertThrows(EmailAlreadyExistsException.class, () -> {
+        Exception exception = assertThrows(EmailAlreadyExistsException.class, () -> {
             authenticationService.register(new User("existing_email","password"));
         });
+
+        String expectedMessage = "Email already exists";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void authenticate_withBadCredentials() {
+        Exception exception= assertThrows(InvalidCredentialsException.class, () -> {
+            authenticationService.authenticate(new User("new_email","password"));
+        });
+
+        String expectedMessage= "Invalid credentials";
+        String actualMessage= exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -74,14 +96,7 @@ class AuthenticationControllerTest {
     }
 
 
-    @Test
-    void authenticate_withBadCredentials() {
-        assertThrows(InvalidCredentialsException.class, () -> {
-            authenticationService.authenticate(new User("new_email","password"));
-        });
 
-
-    }
 
     @Test
     void authenticate_withValidCredentials() {
