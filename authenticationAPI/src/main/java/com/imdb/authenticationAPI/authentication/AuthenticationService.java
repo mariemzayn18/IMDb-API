@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +38,8 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse register(User request) {
-        if (userRepository.existsById(request.getEmail())) {
+        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+        if (userOptional.isPresent()) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
 
@@ -49,8 +51,7 @@ public class AuthenticationService {
         userRepository.save(user);
 
         var jwtToken= this.jwtService.generateToken(user);
-        var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime())
-                /1000;
+        var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -67,12 +68,11 @@ public class AuthenticationService {
             throw new InvalidCredentialsException("Invalid credentials");
         }
 
-            var user = userRepository.findById(request.getEmail())
+        var user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow();
 
-            var jwtToken = this.jwtService.generateToken(user);
-            var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime())
-                                /1000;
+        var jwtToken = this.jwtService.generateToken(user);
+        var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
 
         return AuthenticationResponse.builder()
                     .token(jwtToken)
