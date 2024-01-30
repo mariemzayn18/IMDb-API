@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
@@ -26,7 +25,7 @@ public class AuthenticationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthenticationService(UserRepository userRepository,
+    AuthenticationService(UserRepository userRepository,
                                  PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
                                  AuthenticationManager authenticationManager) {
@@ -53,10 +52,8 @@ public class AuthenticationService {
         var jwtToken= this.jwtService.generateToken(user);
         var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
 
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .expiresIn(jwtExpiration)
-                .build();
+        AuthenticationResponse response = new AuthenticationResponse(jwtToken, jwtExpiration);
+        return response;
     }
 
     public AuthenticationResponse authenticate(User request) {
@@ -74,9 +71,8 @@ public class AuthenticationService {
         var jwtToken = this.jwtService.generateToken(user);
         var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
 
-        return AuthenticationResponse.builder()
-                    .token(jwtToken)
-                    .expiresIn(jwtExpiration)
-                    .build();
+
+        AuthenticationResponse response = new AuthenticationResponse(jwtToken, jwtExpiration);
+        return response;
     }
 }
