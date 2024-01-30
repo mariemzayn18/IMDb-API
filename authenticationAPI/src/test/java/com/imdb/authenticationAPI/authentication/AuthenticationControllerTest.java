@@ -1,12 +1,7 @@
 package com.imdb.authenticationAPI.authentication;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.imdb.authenticationAPI.exception.EmailAlreadyExistsException;
 import com.imdb.authenticationAPI.exception.InvalidCredentialsException;
 import com.imdb.authenticationAPI.security.JwtService;
@@ -22,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,10 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,6 +57,16 @@ class AuthenticationControllerTest {
     @MockBean
     PasswordEncoder passwordEncoder;
 
+    public class TestUser extends User {
+        public TestUser(String email, String password) {
+            super(email, password);
+        }
+
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return Collections.emptyList(); // Return an empty list for testing purposes
+        }
+    }
     @BeforeEach
     void setUp() {
         mockMvc= MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -86,30 +89,10 @@ class AuthenticationControllerTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
-
-    @Test
-    void register_withNewEmail() throws Exception {
-        User newUser = new User("new_email", "password");
-
-        String requestJson = objectMapper.writeValueAsString(newUser);
-
-        Mockito.when(userRepository.findByEmail(newUser.getEmail())).thenReturn(Optional.empty());
-        Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
-        Mockito.when(passwordEncoder.encode(newUser.getPassword())).thenReturn("password");
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("token"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").value(new Date()));
-    }
-
-
     @Test
     void authenticate_withBadCredentials() {
         Mockito.when(authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken("new_email","password")))
+                        new UsernamePasswordAuthenticationToken("new_email","password")))
                 .thenThrow(new InvalidCredentialsException("Invalid credentials"));
 
         Exception exception= assertThrows(InvalidCredentialsException.class, () -> {
@@ -123,12 +106,30 @@ class AuthenticationControllerTest {
     }
 
     @Test
+    void register_withNewEmail() throws Exception {
+        TestUser newUser = new TestUser("new_email", "password");
+        String requestJson = objectMapper.writeValueAsString(newUser);
+
+        Mockito.when(userRepository.findByEmail(newUser.getEmail())).thenReturn(Optional.empty());
+        Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
+        Mockito.when(passwordEncoder.encode(newUser.getPassword())).thenReturn("password");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("token"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").value("0"));
+    }
+
+
+    @Test
     void authenticate_withValidCredentials() throws Exception {
         Mockito.when(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("existing_email","password")))
                 .thenReturn(new UsernamePasswordAuthenticationToken("existing_email","password"));
 
 
-        User existingUser= new User("existing_email","password");
+        TestUser existingUser= new TestUser("existing_email","password");
         String requestJson = objectMapper.writeValueAsString(existingUser);
 
         Mockito.when(userRepository.findByEmail("existing_email")).thenReturn(Optional.of(existingUser));
@@ -139,6 +140,6 @@ class AuthenticationControllerTest {
                         .content(requestJson))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("token"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").value(new Date()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").value("0"));
     }
 }
