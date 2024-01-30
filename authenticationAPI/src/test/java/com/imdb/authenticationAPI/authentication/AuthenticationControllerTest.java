@@ -1,7 +1,9 @@
 package com.imdb.authenticationAPI.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.imdb.authenticationAPI.exception.ApiError;
 import com.imdb.authenticationAPI.exception.EmailAlreadyExistsException;
+import com.imdb.authenticationAPI.exception.GlobalExceptionHandler;
 import com.imdb.authenticationAPI.exception.InvalidCredentialsException;
 import com.imdb.authenticationAPI.security.JwtService;
 import com.imdb.authenticationAPI.user.User;
@@ -19,7 +21,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -89,6 +90,15 @@ class AuthenticationControllerTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
+    @Test
+    void handleEmailAlreadyExistsException(){
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+        EmailAlreadyExistsException exception= new EmailAlreadyExistsException("Email already exists");
+        ResponseEntity<Object> responseEntity= handler.handleEmailAlreadyExistsException(exception);
+        ApiError apiError= new ApiError(HttpStatus.FORBIDDEN, "Email already exists", "EMAIL_EXISTS");
+        assertEquals(apiError, responseEntity.getBody());
+    }
     @Test
     void authenticate_withBadCredentials() {
         Mockito.when(authenticationManager.authenticate(
@@ -104,7 +114,14 @@ class AuthenticationControllerTest {
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
-
+    @Test
+    void handleInvalidCredentialsException(){
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+        InvalidCredentialsException exception= new InvalidCredentialsException("Invalid credentials");
+        ResponseEntity<Object> responseEntity= handler.handleInvalidCredentialsException(exception);
+        ApiError apiError= new ApiError(HttpStatus.UNAUTHORIZED, "Invalid credentials", "BAD_CREDENTIALS");
+        assertEquals(apiError, responseEntity.getBody());
+    }
     @Test
     void register_withNewEmail() throws Exception {
         TestUser newUser = new TestUser("new_email", "password");
@@ -121,8 +138,6 @@ class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("token"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").value("0"));
     }
-
-
     @Test
     void authenticate_withValidCredentials() throws Exception {
         Mockito.when(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("existing_email","password")))
@@ -142,7 +157,6 @@ class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").value("token"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").value("0"));
     }
-
     @Test
     void validate() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/validate"))
