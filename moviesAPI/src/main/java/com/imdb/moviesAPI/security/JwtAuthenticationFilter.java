@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,8 @@ import org.springframework.http.HttpHeaders;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final String AUTH_URL = "http://localhost:8080/api/auth/validate";
+    @Value("${auth.url}")
+    private String AUTH_URL;
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
@@ -50,7 +52,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (HttpClientErrorException e) {
             response.setStatus(403);
-            return;
         }
 
     }
