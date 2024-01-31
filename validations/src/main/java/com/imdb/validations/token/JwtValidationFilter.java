@@ -68,7 +68,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void handleInvalidToken(HttpServletResponse response, String errorMessage) throws IOException {
+    public void handleInvalidToken(HttpServletResponse response, String errorMessage) throws IOException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.getWriter().write(errorMessage);
         response.getWriter().flush();

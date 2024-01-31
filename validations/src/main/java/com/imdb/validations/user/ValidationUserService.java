@@ -20,7 +20,7 @@ public class ValidationUserService {
         validationUserRepository.save(validationUsers);
     }
 
-    public Boolean isUserLoggedIn(String email){
+    public boolean isUserLoggedIn(String email){
         ValidationUsers validationUsers = validationUserRepository.findById(email).orElse(null);
         return validationUsers != null ? validationUsers.getIsLoggedIn() : false;
     }
