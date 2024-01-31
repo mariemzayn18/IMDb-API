@@ -1,6 +1,5 @@
 package com.imdb.authenticationAPI.security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,14 +33,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(POST, "/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
                 )
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValidationUser {
+public class ValidationUsers {
     @Id
     private String email;
     private Boolean isLoggedIn;

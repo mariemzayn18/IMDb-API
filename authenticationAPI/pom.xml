@@ -72,6 +72,12 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.12.3</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.imdb</groupId>
+			<artifactId>validations</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

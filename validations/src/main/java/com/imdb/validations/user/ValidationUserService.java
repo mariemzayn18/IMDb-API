@@ -12,16 +12,16 @@ public class ValidationUserService {
     }
 
 
-    public void register(ValidationUser validationUser) {
-        validationUserRepository.save(validationUser);
+    public void register(ValidationUsers validationUsers) {
+        validationUserRepository.save(validationUsers);
     }
 
-    public void updateInfo(ValidationUser validationUser) {
-        validationUserRepository.save(validationUser);
+    public void updateInfo(ValidationUsers validationUsers) {
+        validationUserRepository.save(validationUsers);
     }
 
     public Boolean isUserLoggedIn(String email){
-        ValidationUser validationUser = validationUserRepository.findById(email).orElse(null);
-        return validationUser != null ? validationUser.getIsLoggedIn() : false;
+        ValidationUsers validationUsers = validationUserRepository.findById(email).orElse(null);
+        return validationUsers != null ? validationUsers.getIsLoggedIn() : false;
     }
 }

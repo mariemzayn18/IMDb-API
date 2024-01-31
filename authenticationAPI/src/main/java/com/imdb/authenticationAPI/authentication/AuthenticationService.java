@@ -5,14 +5,15 @@ import com.imdb.authenticationAPI.exception.EmailAlreadyExistsException;
 import com.imdb.authenticationAPI.exception.InvalidCredentialsException;
 import com.imdb.authenticationAPI.user.User;
 import com.imdb.authenticationAPI.user.UserRepository;
-import com.imdb.authenticationAPI.security.JwtService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.imdb.validations.token.JwtService;
+import com.imdb.validations.user.ValidationUsers;
+import com.imdb.validations.user.ValidationUserService;
 
 import java.util.Date;
 import java.util.Optional;
@@ -23,16 +24,19 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final ValidationUserService validationUserService;
 
     @Autowired
     AuthenticationService(UserRepository userRepository,
-                                 PasswordEncoder passwordEncoder,
-                                 JwtService jwtService,
-                                 AuthenticationManager authenticationManager) {
+                          PasswordEncoder passwordEncoder,
+                          JwtService jwtService,
+                          AuthenticationManager authenticationManager,
+                          ValidationUserService validationUserService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.validationUserService = validationUserService;
     }
 
 
@@ -48,6 +52,7 @@ public class AuthenticationService {
                 .build();
 
         userRepository.save(user);
+        validationUserService.register(new ValidationUsers(user.getEmail(),true));
 
         var jwtToken= this.jwtService.generateToken(user);
         var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
@@ -66,6 +71,8 @@ public class AuthenticationService {
         }
 
         User user = userRepository.findByEmail(request.getEmail()).orElse(null);
+
+        validationUserService.updateInfo(new ValidationUsers(request.getEmail(),true));
 
         var jwtToken = this.jwtService.generateToken(user);
         var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;

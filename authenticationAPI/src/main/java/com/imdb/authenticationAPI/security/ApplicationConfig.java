@@ -46,15 +46,4 @@ public class ApplicationConfig {
     public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
         return authentication -> authenticationProvider.authenticate(authentication);
     }
-
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:4200");
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
 }

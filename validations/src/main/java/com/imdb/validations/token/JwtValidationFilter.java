@@ -30,6 +30,13 @@ public class JwtValidationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        // exclude the login and register endpoints from the filter
+        if (request.getRequestURI().equals("/api/auth/authenticate") ||
+                request.getRequestURI().equals("/api/auth/register")){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
         final String token;
         final String userEmail;

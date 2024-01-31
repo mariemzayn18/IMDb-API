@@ -13,12 +13,12 @@ public class ValidationUserController {
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody ValidationUser validationUser) {
-        validationUserService.register(validationUser);
+    public void register(@RequestBody ValidationUsers validationUsers) {
+        validationUserService.register(validationUsers);
     }
 
     @PutMapping("/info")
-    public void updateInfo(@RequestBody ValidationUser validationUser) {
-        validationUserService.updateInfo(validationUser);
+    public void updateInfo(@RequestBody ValidationUsers validationUsers) {
+        validationUserService.updateInfo(validationUsers);
     }
 }
