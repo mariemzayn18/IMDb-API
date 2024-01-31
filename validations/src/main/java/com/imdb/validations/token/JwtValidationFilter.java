@@ -46,7 +46,6 @@ public class JwtValidationFilter extends OncePerRequestFilter {
             return;
         }
 
-        try {
             token = authHeader.substring(7);
             userEmail = jwtService.extractUsername(token);
 
@@ -59,11 +58,6 @@ public class JwtValidationFilter extends OncePerRequestFilter {
                 handleInvalidToken(response, "Expired token");
                 return;
             }
-
-        } catch (io.jsonwebtoken.security.SignatureException e) {
-            handleInvalidToken(response, "Invalid token");
-            return;
-        }
 
         filterChain.doFilter(request, response);
     }

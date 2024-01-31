@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.SignatureException;
 
 import static org.mockito.Mockito.*;
 
@@ -64,6 +65,7 @@ class JwtValidationFilterTest {
 
         verifyForbiddenResponse(response, "Invalid or missing Authorization header");
     }
+
     @Test
     void doFilterInternal_invalidToken_shouldHandleUserLoggedOut() throws ServletException, IOException {
         Mockito.when(request.getRequestURI()).thenReturn("/some/endpoint");
