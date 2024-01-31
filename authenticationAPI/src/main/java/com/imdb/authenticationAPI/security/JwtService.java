@@ -2,6 +2,7 @@ package com.imdb.authenticationAPI.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private SecretKey secretKey;
+    @Value("${security.jwt.secretKey}")
+    private String secretKey;
 
     @Value("${security.jwt.expirationMillis}")
     private long expirationMillis;
@@ -35,7 +37,7 @@ public class JwtService {
     private String generateToken(
             Map<String,Object> extraClaims,
             UserDetails userDetails
-    ){
+    ) {
             Date now = new Date();
             Date expiryDate = new Date(now.getTime() + expirationMillis);
             SecretKey key= getSecretKey();
@@ -73,30 +75,11 @@ public class JwtService {
         }
     }
 
-    private SecretKey generateSecretKey() throws NoSuchAlgorithmException {
-        // Generate a secret key using AES algorithm with a key size of 256 bits
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(256);
-        SecretKey secretKey = keyGenerator.generateKey();
-
-        // Encode the SecretKey to Base64
-        byte[] keyBytes = Base64.getEncoder().encode(secretKey.getEncoded());
-
-        // Encode the AES key to Base64 and use it to generate an HMAC key
+    private SecretKey getSecretKey(){
+        byte[] keyBytes = Base64.getDecoder().decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private SecretKey getSecretKey(){
-        if(secretKey==null){
-            try {
-                secretKey= generateSecretKey();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return secretKey;
-    }
     private Claims extractAllClaims(String token) throws NoSuchAlgorithmException {
         return Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token).getBody();
     }
