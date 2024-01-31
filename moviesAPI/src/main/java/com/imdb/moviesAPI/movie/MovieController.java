@@ -14,18 +14,18 @@ public class MovieController {
 
     @GetMapping("/movies")
     public List<Movie> getMovies(@RequestParam int page,
-                                 @RequestHeader String Authorization ){
+                                 @RequestHeader String Authentication ){
         return movieService.getMovies(page);
     }
 
     @GetMapping("/movie/{id}")
     public Movie getMovieById(@PathVariable Long id,
-                              @RequestHeader String Authorization ){
+                              @RequestHeader String Authentication ){
         return movieService.getMovieById(id);
     }
 
     @PostMapping("/movies")
-    public void addMovies(@RequestHeader String Authorization,
+    public void addMovies(@RequestHeader String Authentication,
                           @RequestBody List<Movie> movies ){
         movieService.addMovies(movies);
     }
