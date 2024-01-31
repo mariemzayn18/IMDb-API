@@ -17,15 +17,12 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private JwtService jwtService;
-    private UserDetailsService userDetailsService;
     private UserService userService;
 
     @Autowired
     public JwtAuthenticationFilter(JwtService jwtService,
-                                   UserDetailsService userDetailsService,
                                    UserService userService) {
         this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
         this.userService = userService;
     }
 
@@ -48,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             userEmail = jwtService.extractUsername(token);
 
             if (!userService.isUserLoggedIn(userEmail)) {
-                handleInvalidToken(response, "Invalid token");
+                handleInvalidToken(response, "User is logged out");
                 return;
             }
 
