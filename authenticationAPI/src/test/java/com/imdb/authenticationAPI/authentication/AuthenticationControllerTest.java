@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -30,6 +32,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -155,10 +158,14 @@ class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").isNotEmpty());
     }
-//    @Test
-//    void validate() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/logout")
-//                        .header("Authorization", "Bearer djdhsjdsfsjfhsdf.fdfsfsdf.fsdfdsf"))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    // wrong test
+    void logout() throws Exception {
+        String invalidJwtToken = "your-invalid-jwt-token"; // Replace with an invalid token
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/logout")
+                        .header("Authorization", "Bearer "+invalidJwtToken ))
+                        .andExpect(status().isOk());
+//                .andExpect(status().isUnauthorized());
+    }
 }

@@ -71,7 +71,7 @@ class MovieControllerTest {
     @Test
     void getMovies() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/movies?page=1")
-                        .header("Authentication", "Bearer"))
+                        .header("Authorization", "Bearer"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("title1"))
@@ -82,7 +82,7 @@ class MovieControllerTest {
     @Test
     void getMovieByExistingId() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/movie/1")
-                        .header("Authentication", "Bearer"))
+                        .header("Authorization", "Bearer"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("title1"));
     }
@@ -90,14 +90,14 @@ class MovieControllerTest {
     @Test
     void getMovieByNotFoundId() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/movie/4")
-                        .header("Authentication", "Bearer"))
+                        .header("Authorization", "Bearer"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
     }
     @Test
     void addMovies() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/movies")
-                        .header("Authentication", "Bearer")
+                        .header("Authorization", "Bearer")
                         .content(objectMapper.writeValueAsString(List.of(movie1, movie2, movie3)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());

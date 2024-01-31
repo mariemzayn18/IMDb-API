@@ -26,7 +26,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestHeader String Authentication) {
+    public void logout(@RequestHeader String Authorization) {
     }
 
 }

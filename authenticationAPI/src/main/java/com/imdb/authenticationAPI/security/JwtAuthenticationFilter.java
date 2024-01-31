@@ -38,6 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // its invok
         final String token;
         final String userEmail;
 
+        System.out.println("JwtAuthenticationFilter: Intercepting request...");
+
         // Continue with the filter chain if the token is null or does not start with "Bearer "
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
