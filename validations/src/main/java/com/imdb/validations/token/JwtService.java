@@ -27,6 +27,11 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    // to generate a token without any extra claims
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(),  userDetails);
+    }
+
     private String generateToken(
             Map<String,Object> extraClaims,
             UserDetails userDetails
