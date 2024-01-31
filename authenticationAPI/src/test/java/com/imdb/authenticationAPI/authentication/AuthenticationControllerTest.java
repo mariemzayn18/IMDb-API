@@ -53,12 +53,6 @@ class AuthenticationControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Autowired
-    JwtService jwtService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
     public class TestUser extends User {
         public TestUser(String email, String password) {
             super(email, password);
