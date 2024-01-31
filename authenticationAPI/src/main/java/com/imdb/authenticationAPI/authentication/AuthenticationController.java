@@ -1,6 +1,7 @@
 package com.imdb.authenticationAPI.authentication;
 
 import com.imdb.authenticationAPI.user.User;
+import com.imdb.validations.user.ValidationUsers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
-    @GetMapping("/validate")
-    public void validate() {
+    @PostMapping("/logout")
+    public void logout(@RequestHeader String Authentication) {
     }
+
 }

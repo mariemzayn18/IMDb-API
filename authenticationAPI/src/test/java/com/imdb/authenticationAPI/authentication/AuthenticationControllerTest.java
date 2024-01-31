@@ -7,6 +7,8 @@ import com.imdb.authenticationAPI.exception.GlobalExceptionHandler;
 import com.imdb.authenticationAPI.exception.InvalidCredentialsException;
 import com.imdb.authenticationAPI.user.User;
 import com.imdb.authenticationAPI.user.UserRepository;
+import com.imdb.validations.user.ValidationUserRepository;
+import com.imdb.validations.user.ValidationUsers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,6 +39,9 @@ class AuthenticationControllerTest {
 
     @MockBean
     UserRepository userRepository;
+
+    @MockBean
+    ValidationUserRepository validationUserRepository;
 
     @MockBean
     AuthenticationManager authenticationManager;
@@ -119,6 +124,9 @@ class AuthenticationControllerTest {
         Mockito.when(userRepository.findByEmail(newUser.getEmail())).thenReturn(Optional.empty());
         Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
 
+        Mockito.when(validationUserRepository.save(new ValidationUsers(newUser.getEmail(),true))).
+                thenReturn(new ValidationUsers(newUser.getEmail(),true));
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
@@ -137,6 +145,9 @@ class AuthenticationControllerTest {
 
         Mockito.when(userRepository.findByEmail("existing_email")).thenReturn(Optional.of(existingUser));
 
+        Mockito.when(validationUserRepository.save(new ValidationUsers(existingUser.getEmail(),true))).
+                thenReturn(new ValidationUsers(existingUser.getEmail(),true));
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
@@ -144,9 +155,10 @@ class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.token").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").isNotEmpty());
     }
-    @Test
-    void validate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/validate"))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void validate() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/logout")
+//                        .header("Authorization", "Bearer djdhsjdsfsjfhsdf.fdfsfsdf.fsdfdsf"))
+//                .andExpect(status().isOk());
+//    }
 }
