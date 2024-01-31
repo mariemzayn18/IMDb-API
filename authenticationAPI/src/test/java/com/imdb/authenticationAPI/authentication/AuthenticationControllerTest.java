@@ -21,8 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -32,7 +31,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -94,20 +92,24 @@ class AuthenticationControllerTest {
         EmailAlreadyExistsException exception= new EmailAlreadyExistsException("Email already exists");
         ResponseEntity<Object> responseEntity= handler.handleEmailAlreadyExistsException(exception);
         ApiError apiError= new ApiError(HttpStatus.FORBIDDEN, "Email already exists", "EMAIL_EXISTS");
-        assertEquals(apiError, responseEntity.getBody());
+
+        assertEquals(apiError.getStatus(), ((ApiError) responseEntity.getBody()).getStatus());
+        assertEquals(apiError.getMessage(), ((ApiError) responseEntity.getBody()).getMessage());
+        assertEquals(apiError.getErrorCode(), ((ApiError) responseEntity.getBody()).getErrorCode());
     }
     @Test
-    void authenticate_withBadCredentials() {
+    void authenticate_withInvalidCredentials() {
         Mockito.when(authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken("new_email","password")))
-                .thenThrow(new InvalidCredentialsException("Invalid credentials"));
+                .thenThrow(new AuthenticationException("Invalid credentials") {
+                });
 
-        Exception exception= assertThrows(InvalidCredentialsException.class, () -> {
-            authenticationService.authenticate(new User("new_email","password"));
+        Exception exception = assertThrows(InvalidCredentialsException.class, () -> {
+            authenticationService.authenticate(new User("new_email", "password"));
         });
 
-        String expectedMessage= "Invalid credentials";
-        String actualMessage= exception.getMessage();
+        String expectedMessage = "Invalid credentials";
+        String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -117,7 +119,10 @@ class AuthenticationControllerTest {
         InvalidCredentialsException exception= new InvalidCredentialsException("Invalid credentials");
         ResponseEntity<Object> responseEntity= handler.handleInvalidCredentialsException(exception);
         ApiError apiError= new ApiError(HttpStatus.UNAUTHORIZED, "Invalid credentials", "BAD_CREDENTIALS");
-        assertEquals(apiError, responseEntity.getBody());
+
+        assertEquals(apiError.getStatus(), ((ApiError) responseEntity.getBody()).getStatus());
+        assertEquals(apiError.getMessage(), ((ApiError) responseEntity.getBody()).getMessage());
+        assertEquals(apiError.getErrorCode(), ((ApiError) responseEntity.getBody()).getErrorCode());
     }
     @Test
     void register_withNewEmail() throws Exception {
@@ -161,7 +166,7 @@ class AuthenticationControllerTest {
     @Test
     // wrong test
     void logout() throws Exception {
-        String invalidJwtToken = "your-invalid-jwt-token"; // Replace with an invalid token
+        String invalidJwtToken = "your-invalid-jwt-token";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/logout")
                         .header("Authorization", "Bearer "+invalidJwtToken ))

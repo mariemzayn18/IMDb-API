@@ -46,10 +46,7 @@ public class AuthenticationService {
             throw new EmailAlreadyExistsException("Email already exists");
         }
 
-        User user= User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .build();
+        User user= new User(request.getEmail(), passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
         validationUserService.register(new ValidationUsers(user.getEmail(),true));
