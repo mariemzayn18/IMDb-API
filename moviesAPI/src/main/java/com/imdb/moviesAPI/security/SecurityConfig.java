@@ -1,6 +1,6 @@
 package com.imdb.moviesAPI.security;
 
-import com.imdb.validations.token.JwtAuthenticationFilter;
+import com.imdb.validations.token.JwtValidationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +15,11 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final JwtValidationFilter jwtAuthFilter;
     private final CorsFilter corsFilter;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, CorsFilter corsFilter) {
+    public SecurityConfig(JwtValidationFilter jwtAuthFilter, CorsFilter corsFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.corsFilter = corsFilter;
     }
