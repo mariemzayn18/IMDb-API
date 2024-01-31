@@ -2,7 +2,6 @@ package com.imdb.validations.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users_for_validation")
-public class User {
+public class ValidationUser {
     @Id
     private String email;
     private Boolean isLoggedIn;

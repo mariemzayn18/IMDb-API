@@ -1,6 +1,6 @@
 package com.imdb.validations.token;
 
-import com.imdb.validations.user.UserService;
+import com.imdb.validations.user.ValidationUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,16 +13,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtValidationFilter extends OncePerRequestFilter {
 
     private JwtService jwtService;
-    private UserService userService;
+    private ValidationUserService validationUserService;
 
     @Autowired
-    public JwtAuthenticationFilter(JwtService jwtService,
-                                   UserService userService) {
+    public JwtValidationFilter(JwtService jwtService,
+                               ValidationUserService validationUserService) {
         this.jwtService = jwtService;
-        this.userService = userService;
+        this.validationUserService = validationUserService;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             userEmail = jwtService.extractUsername(token);
 
-            if (!userService.isUserLoggedIn(userEmail)) {
+            if (!validationUserService.isUserLoggedIn(userEmail)) {
                 handleInvalidToken(response, "Invalid token");
                 return;
             }
