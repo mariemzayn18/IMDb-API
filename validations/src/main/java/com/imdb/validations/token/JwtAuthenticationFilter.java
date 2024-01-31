@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             userEmail = jwtService.extractUsername(token);
 
             if (!userService.isUserLoggedIn(userEmail)) {
-                handleInvalidToken(response, "User is logged out");
+                handleInvalidToken(response, "Invalid token");
                 return;
             }
 

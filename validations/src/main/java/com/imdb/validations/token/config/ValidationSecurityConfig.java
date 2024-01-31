@@ -7,10 +7,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class ValidationSecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain validationSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(req -> req.anyRequest().permitAll());
         return http.build();
     }
