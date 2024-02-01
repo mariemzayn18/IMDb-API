@@ -1,4 +1,4 @@
-package com.imdb.moviesAPI.security;
+package com.imdb.moviesAPI.configuration;
 
 import com.imdb.validations.token.JwtValidationFilter;
 import org.springframework.beans.factory.annotation.Autowired;

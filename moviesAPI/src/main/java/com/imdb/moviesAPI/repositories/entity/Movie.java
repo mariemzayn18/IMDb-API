@@ -1,4 +1,4 @@
-package com.imdb.moviesAPI.movie;
+package com.imdb.moviesAPI.repositories.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

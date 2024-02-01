@@ -1,5 +1,7 @@
-package com.imdb.moviesAPI.movie;
+package com.imdb.moviesAPI.contoller;
 
+import com.imdb.moviesAPI.repositories.entity.Movie;
+import com.imdb.moviesAPI.service.MovieService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
