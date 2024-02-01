@@ -5,10 +5,14 @@ import com.imdb.authenticationAPI.exception.ApiError;
 import com.imdb.authenticationAPI.exception.EmailAlreadyExistsException;
 import com.imdb.authenticationAPI.exception.GlobalExceptionHandler;
 import com.imdb.authenticationAPI.exception.InvalidCredentialsException;
+import com.imdb.authenticationAPI.security.JwtAuthenticationFilter;
 import com.imdb.authenticationAPI.user.User;
 import com.imdb.authenticationAPI.user.UserRepository;
+import com.imdb.validations.token.JwtService;
 import com.imdb.validations.user.ValidationUserRepository;
 import com.imdb.validations.user.ValidationUsers;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,8 +24,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -31,6 +40,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -56,6 +67,28 @@ class AuthenticationControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthFilter;
+
+//    @MockBean
+//    private JwtService jwtService;
+//
+//    @MockBean
+//    private UserDetailsService userDetailsService;
+//
+//    @MockBean
+//    HttpServletRequest request;
+//
+//    @MockBean
+//    HttpServletResponse response;
+//
+//    @MockBean
+//    Authentication authentication;
+//
+//    @MockBean
+//    private LogoutHandler logoutHandler;
+
+
     public class TestUser extends User {
         public TestUser(String email, String password) {
             super(email, password);
@@ -68,7 +101,9 @@ class AuthenticationControllerTest {
     }
     @BeforeEach
     void setUp() {
-        mockMvc= MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc= MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .addFilter(jwtAuthFilter)
+                .build();
     }
 
     @Test
@@ -164,13 +199,32 @@ class AuthenticationControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.expiresIn").isNotEmpty());
     }
     @Test
-    // wrong test
-    void logout() throws Exception {
-        String invalidJwtToken = "your-invalid-jwt-token";
-
+    void logout_ifUnauthenticated() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/logout")
-                        .header("Authorization", "Bearer "+invalidJwtToken ))
-                        .andExpect(status().isOk());
-//                .andExpect(status().isUnauthorized());
+                        .header("Authorization", "invalidJwtToken "))
+                .andExpect(unauthenticated());
+    }
+
+    @Test
+    void logout_ifAuthenticated() throws Exception {
+        // Simulate an authenticated user
+//        UserDetails userDetails = new User("user@example.com", "password");
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//        SecurityContextHolder.getContext().setAuthentication(null);
+//
+//        // Mock the behavior of JwtService and UserDetailsService
+//        Mockito.when(jwtService.extractUsername("validToken")).thenReturn("user@example.com");
+//        Mockito.when(userDetailsService.loadUserByUsername("user@example.com")).thenReturn(userDetails);
+//        Mockito.when(jwtService.validateToken("validToken", userDetails)).thenReturn(true);
+//
+////        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        // Perform the logout request
+//        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/logout")
+//                        .header("Authorization", "Bearer validToken"))
+//                .andExpect(status().isOk())
+//                .andExpect(authenticated().withUsername("user@example.com"));
+//
+//        // Reset the security context after the test
+//        SecurityContextHolder.clearContext();
     }
 }
