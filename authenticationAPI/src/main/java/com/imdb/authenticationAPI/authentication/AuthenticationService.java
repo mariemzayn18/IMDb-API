@@ -51,8 +51,8 @@ public class AuthenticationService {
         userRepository.save(user);
         validationUserService.register(new ValidationUsers(user.getEmail(),true));
 
-        var jwtToken= this.jwtService.generateToken(user);
-        var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
+        String jwtToken = jwtService.generateToken(user);
+        long jwtExpiration= (jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
 
         AuthenticationResponse response = new AuthenticationResponse(jwtToken, jwtExpiration);
         return response;
@@ -71,9 +71,8 @@ public class AuthenticationService {
 
         validationUserService.updateInfo(new ValidationUsers(request.getEmail(),true));
 
-        var jwtToken = this.jwtService.generateToken(user);
-        var jwtExpiration= (this.jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
-
+        String jwtToken = jwtService.generateToken(user);
+        long jwtExpiration= (jwtService.extractExpiration(jwtToken).getTime() - new Date().getTime()) /1000;
 
         AuthenticationResponse response = new AuthenticationResponse(jwtToken, jwtExpiration);
         return response;
