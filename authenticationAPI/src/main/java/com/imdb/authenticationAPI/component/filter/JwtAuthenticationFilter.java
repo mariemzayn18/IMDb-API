@@ -1,6 +1,6 @@
 package com.imdb.authenticationAPI.component.filter;
 
-import com.imdb.validations.token.JwtService;
+import com.imdb.validations.component.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

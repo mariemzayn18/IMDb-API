@@ -12,9 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.imdb.validations.token.JwtService;
-import com.imdb.validations.user.ValidationUsers;
-import com.imdb.validations.user.ValidationUserService;
+import com.imdb.validations.service.ValidationUserService;
+import com.imdb.validations.repositories.entity.ValidationUsers;
+import com.imdb.validations.component.service.JwtService;
 
 import java.util.Date;
 import java.util.Optional;

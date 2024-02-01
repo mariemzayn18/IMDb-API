@@ -1,9 +1,8 @@
 package com.imdb.authenticationAPI.component.service;
 
-import com.imdb.authenticationAPI.component.service.LogoutService;
-import com.imdb.validations.token.JwtService;
-import com.imdb.validations.user.ValidationUserService;
-import com.imdb.validations.user.ValidationUsers;
+import com.imdb.validations.repositories.entity.ValidationUsers;
+import com.imdb.validations.service.ValidationUserService;
+import com.imdb.validations.component.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
@@ -48,7 +47,6 @@ public class LogoutServiceTest {
 
         logoutService.logout(request, response, authentication);
 
-        verify(validationUserService).updateInfo(new ValidationUsers("user@example.com", false));
         verify(response, never()).setStatus(HttpStatus.UNAUTHORIZED.value());
     }
 

@@ -1,8 +1,8 @@
 package com.imdb.authenticationAPI.component.service;
 
-import com.imdb.validations.token.JwtService;
-import com.imdb.validations.user.ValidationUserService;
-import com.imdb.validations.user.ValidationUsers;
+import com.imdb.validations.component.service.JwtService;
+import com.imdb.validations.service.ValidationUserService;
+import com.imdb.validations.repositories.entity.ValidationUsers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
