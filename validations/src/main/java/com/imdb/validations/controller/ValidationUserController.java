@@ -1,5 +1,7 @@
-package com.imdb.validations.user;
+package com.imdb.validations.controller;
 
+import com.imdb.validations.service.ValidationUserService;
+import com.imdb.validations.repositories.entity.ValidationUsers;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

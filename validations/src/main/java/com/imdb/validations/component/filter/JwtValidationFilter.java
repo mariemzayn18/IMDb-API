@@ -1,6 +1,7 @@
-package com.imdb.validations.token;
+package com.imdb.validations.component.filter;
 
-import com.imdb.validations.user.ValidationUserService;
+import com.imdb.validations.component.service.JwtService;
+import com.imdb.validations.service.ValidationUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
+    public void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 

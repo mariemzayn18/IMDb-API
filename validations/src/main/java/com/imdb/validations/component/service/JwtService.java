@@ -1,4 +1,4 @@
-package com.imdb.validations.token;
+package com.imdb.validations.component.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

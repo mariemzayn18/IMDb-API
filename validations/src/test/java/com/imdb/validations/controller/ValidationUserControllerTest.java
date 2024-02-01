@@ -1,7 +1,9 @@
-package com.imdb.validations.user;
+package com.imdb.validations.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.imdb.validations.repositories.repository.ValidationUserRepository;
+import com.imdb.validations.service.ValidationUserService;
+import com.imdb.validations.repositories.entity.ValidationUsers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class ValidationUserControllerTest {
 

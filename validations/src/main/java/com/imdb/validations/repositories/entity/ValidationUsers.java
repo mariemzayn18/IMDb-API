@@ -1,4 +1,4 @@
-package com.imdb.validations.user;
+package com.imdb.validations.repositories.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

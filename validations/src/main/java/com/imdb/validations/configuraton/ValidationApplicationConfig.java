@@ -1,4 +1,4 @@
-package com.imdb.validations.token.config;
+package com.imdb.validations.configuraton;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

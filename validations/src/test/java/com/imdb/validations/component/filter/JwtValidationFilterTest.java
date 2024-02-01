@@ -1,6 +1,7 @@
-package com.imdb.validations.token;
+package com.imdb.validations.component.filter;
 
-import com.imdb.validations.user.ValidationUserService;
+import com.imdb.validations.component.service.JwtService;
+import com.imdb.validations.service.ValidationUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.SignatureException;
 
 import static org.mockito.Mockito.*;
 

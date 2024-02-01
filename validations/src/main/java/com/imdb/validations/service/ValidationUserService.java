@@ -1,5 +1,7 @@
-package com.imdb.validations.user;
+package com.imdb.validations.service;
 
+import com.imdb.validations.repositories.entity.ValidationUsers;
+import com.imdb.validations.repositories.repository.ValidationUserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
