@@ -1,4 +1,4 @@
-package com.imdb.authenticationAPI.authentication;
+package com.imdb.authenticationAPI.model;
 
 import lombok.*;
 

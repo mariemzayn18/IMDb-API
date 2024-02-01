@@ -1,7 +1,8 @@
-package com.imdb.authenticationAPI.authentication;
+package com.imdb.authenticationAPI.controller;
 
-import com.imdb.authenticationAPI.user.User;
-import com.imdb.validations.user.ValidationUsers;
+import com.imdb.authenticationAPI.model.AuthenticationResponse;
+import com.imdb.authenticationAPI.service.AuthenticationService;
+import com.imdb.authenticationAPI.repositories.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

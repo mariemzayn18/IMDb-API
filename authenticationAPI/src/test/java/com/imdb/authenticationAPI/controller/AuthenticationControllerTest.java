@@ -1,13 +1,14 @@
-package com.imdb.authenticationAPI.authentication;
+package com.imdb.authenticationAPI.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imdb.authenticationAPI.exception.ApiError;
 import com.imdb.authenticationAPI.exception.EmailAlreadyExistsException;
 import com.imdb.authenticationAPI.exception.GlobalExceptionHandler;
 import com.imdb.authenticationAPI.exception.InvalidCredentialsException;
-import com.imdb.authenticationAPI.security.JwtAuthenticationFilter;
-import com.imdb.authenticationAPI.user.User;
-import com.imdb.authenticationAPI.user.UserRepository;
+import com.imdb.authenticationAPI.component.filter.JwtAuthenticationFilter;
+import com.imdb.authenticationAPI.service.AuthenticationService;
+import com.imdb.authenticationAPI.repositories.entity.User;
+import com.imdb.authenticationAPI.repositories.repository.UserRepository;
 import com.imdb.validations.token.JwtService;
 import com.imdb.validations.user.ValidationUserRepository;
 import com.imdb.validations.user.ValidationUsers;

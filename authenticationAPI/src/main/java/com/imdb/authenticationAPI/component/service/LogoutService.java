@@ -1,4 +1,4 @@
-package com.imdb.authenticationAPI.security;
+package com.imdb.authenticationAPI.component.service;
 
 import com.imdb.validations.token.JwtService;
 import com.imdb.validations.user.ValidationUserService;
