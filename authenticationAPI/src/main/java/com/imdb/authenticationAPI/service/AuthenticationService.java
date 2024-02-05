@@ -1,12 +1,12 @@
-package com.imdb.authenticationAPI.authentication;
+package com.imdb.authenticationAPI.service;
 
 
 import com.imdb.authenticationAPI.exception.EmailAlreadyExistsException;
 import com.imdb.authenticationAPI.exception.InvalidCredentialsException;
-import com.imdb.authenticationAPI.user.User;
-import com.imdb.authenticationAPI.user.UserRepository;
-import com.imdb.authenticationAPI.security.JwtService;
-import lombok.RequiredArgsConstructor;
+import com.imdb.authenticationAPI.model.AuthenticationResponse;
+import com.imdb.authenticationAPI.repositories.entity.User;
+import com.imdb.authenticationAPI.repositories.repository.UserRepository;
+import com.imdb.authenticationAPI.component.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

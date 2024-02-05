@@ -1,5 +1,8 @@
 package com.imdb.moviesAPI.movie;
 
+import com.imdb.moviesAPI.repositories.entity.Movie;
+import com.imdb.moviesAPI.repositories.repository.MovieRepository;
+import com.imdb.moviesAPI.service.MovieService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

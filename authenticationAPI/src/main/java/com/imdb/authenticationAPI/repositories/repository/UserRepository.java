@@ -1,5 +1,6 @@
-package com.imdb.authenticationAPI.user;
+package com.imdb.authenticationAPI.repositories.repository;
 
+import com.imdb.authenticationAPI.repositories.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

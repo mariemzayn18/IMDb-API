@@ -1,4 +1,4 @@
-package com.imdb.authenticationAPI.user;
+package com.imdb.authenticationAPI.repositories.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -1,6 +1,6 @@
-package com.imdb.authenticationAPI.security;
+package com.imdb.authenticationAPI.configuration;
 
-import lombok.RequiredArgsConstructor;
+import com.imdb.authenticationAPI.component.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

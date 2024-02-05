@@ -1,4 +1,6 @@
-package com.imdb.moviesAPI.movie;
+package com.imdb.moviesAPI.service;
+import com.imdb.moviesAPI.repositories.entity.Movie;
+import com.imdb.moviesAPI.repositories.repository.MovieRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

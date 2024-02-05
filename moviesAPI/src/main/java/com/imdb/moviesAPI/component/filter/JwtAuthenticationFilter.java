@@ -1,4 +1,4 @@
-package com.imdb.moviesAPI.security;
+package com.imdb.moviesAPI.component.filter;
 
 import com.imdb.moviesAPI.client.AuthClient;
 import feign.FeignException;
