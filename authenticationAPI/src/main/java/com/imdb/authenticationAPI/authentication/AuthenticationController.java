@@ -25,6 +25,6 @@ public class AuthenticationController {
     }
 
     @GetMapping("/validate")
-    public void validate() {
+    public void validate(@RequestHeader String Authorization) {
     }
 }

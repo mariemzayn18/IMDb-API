@@ -1,5 +1,7 @@
 package com.imdb.moviesAPI.security;
 
+import com.imdb.moviesAPI.client.AuthClient;
+import feign.FeignException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,9 +23,8 @@ import org.springframework.http.HttpHeaders;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${auth.url}")
-    private String AUTH_URL;
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final AuthClient authClient;
+
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -32,7 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization"); //this contains the JWT/Bearer token
-        final String token;
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
             response.setStatus(403);
@@ -40,17 +40,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
 
-        token = authHeader.substring(7);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
         try{
-            ResponseEntity<Void> authResponse = restTemplate.exchange(AUTH_URL, HttpMethod.GET, entity, Void.class);
-            if(authResponse.getStatusCode().is2xxSuccessful()) {
-                filterChain.doFilter(request, response);
-            }
-        } catch (HttpClientErrorException e) {
+           authClient.validate(authHeader);
+           filterChain.doFilter(request, response);
+        } catch (FeignException.Forbidden feignForbiddenException) {
             response.setStatus(403);
         }
 
