@@ -3,11 +3,12 @@ package com.imdb.moviesAPI.exception.errordecoder;
 import com.imdb.moviesAPI.exception.AuthClientException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AuthClientErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String s, Response response) {
-
         switch (response.status()) {
             case 400:
                 return new AuthClientException("Bad request", "400");

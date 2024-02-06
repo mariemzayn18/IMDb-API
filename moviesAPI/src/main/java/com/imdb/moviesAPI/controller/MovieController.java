@@ -1,5 +1,6 @@
 package com.imdb.moviesAPI.controller;
 
+import com.imdb.moviesAPI.model.MovieDto;
 import com.imdb.moviesAPI.repositories.entity.Movie;
 import com.imdb.moviesAPI.service.MovieService;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class MovieController {
 
     @PostMapping("/movies")
     public void addMovies(@RequestHeader String Authorization,
-                          @RequestBody List<Movie> movies ) {
+                          @RequestBody List<MovieDto> movies ) {
         movieService.addMovies(movies, Authorization);
     }
 }
