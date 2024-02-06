@@ -74,4 +74,5 @@ public class AuthenticationService {
         AuthenticationResponse response = new AuthenticationResponse(jwtToken, jwtExpiration);
         return response;
     }
+
 }

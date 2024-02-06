@@ -17,18 +17,18 @@ public class MovieController {
     @GetMapping("/movies")
     public List<Movie> getMovies(@RequestParam int page,
                                  @RequestHeader String Authorization ){
-        return movieService.getMovies(page);
+        return movieService.getMovies(page, Authorization);
     }
 
     @GetMapping("/movie/{id}")
     public Movie getMovieById(@PathVariable Long id,
-                              @RequestHeader String Authorization ){
-        return movieService.getMovieById(id);
+                              @RequestHeader String Authorization ) {
+        return movieService.getMovieById(id, Authorization);
     }
 
     @PostMapping("/movies")
     public void addMovies(@RequestHeader String Authorization,
-                          @RequestBody List<Movie> movies ){
-        movieService.addMovies(movies);
+                          @RequestBody List<Movie> movies ) {
+        movieService.addMovies(movies, Authorization);
     }
 }
