@@ -9,10 +9,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
 
-    @Mapping(target = "movieDto.score", ignore = true)
-    List<Movie> mapMovieDtoToMovie(List<MovieDto> movieDto);
-
-    @Mapping(target = "movieDto.score", ignore = true)
     Movie map(MovieDto movieDto);
+
+    List<Movie> mapMovieDtoToMovie(List<MovieDto> movieDtoList);
 
 }

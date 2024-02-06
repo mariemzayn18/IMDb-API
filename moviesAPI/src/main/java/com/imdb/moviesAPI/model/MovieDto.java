@@ -10,11 +10,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieDto {
-    private Long id;
-    private String posterPath;
-    private String backdropPath;
-    private String title;
-    private Date releaseDate;
-    private String overview;
-    private double score;
+     String posterPath;
+     String backdropPath;
+     String title;
+     Date releaseDate;
+     String overview;
+     double score;
+
 }

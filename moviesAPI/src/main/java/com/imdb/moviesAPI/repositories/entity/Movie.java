@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Movie {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String posterPath;
     private String backdropPath;
